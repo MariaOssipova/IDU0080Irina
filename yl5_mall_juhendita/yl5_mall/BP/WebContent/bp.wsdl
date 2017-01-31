@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://idu0080.tud.ttu.ee/bp/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="bp" targetNamespace="http://idu0080.tud.ttu.ee/bp/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://idu0080.tud.ttu.ee/bp/">
+      <xsd:element name="MinuTellimus">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:integer"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="MinuTellimuseVastus">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="teade" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Tellimus">
+    <wsdl:part element="tns:MinuTellimus" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="TellimuseVastus">
+    <wsdl:part element="tns:MinuTellimuseVastus" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="bp">
+    <wsdl:operation name="TellimuseEsitamine">
+      <wsdl:input message="tns:Tellimus"/>
+      <wsdl:output message="tns:TellimuseVastus"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="bpSOAP" type="tns:bp">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="TellimuseEsitamine">
+      <soap:operation soapAction="http://idu0080.tud.ttu.ee/bp/TellimuseEsitamine"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="bp">
+    <wsdl:port binding="tns:bpSOAP" name="bpSOAP">
+      <soap:address location="http://localhost:8085/BpService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/pakkumus/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="pakkumus"
+	targetNamespace="http://www.example.org/pakkumus/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/pakkumus/">
+			<xsd:element name="PakkumusParing">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="kuller_id" type="xsd:int" />
+						<xsd:element name="tellimus" type="tns:tellimusType"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PakkumusVastus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hind" type="xsd:double" />
+						<xsd:element name="paevade_arv" minOccurs="0" type="xsd:int" />
+						<xsd:element name="offer_id" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+
+			<xsd:complexType name="tellimusType">
+				<xsd:sequence>
+					<xsd:element name="order_id" type="xsd:int" />
+					<xsd:element name="price_total" type="xsd:double" />
+					<xsd:element minOccurs="0" name="seller" type="tns:seller" />
+					<xsd:element minOccurs="0" name="shipping_address"
+						type="tns:address" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="seller">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0"
+						name="addresses" nillable="true" type="tns:address" />
+					<xsd:element name="enterprise" type="xsd:int" />
+					<xsd:element minOccurs="0" name="name" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="address">
+				<xsd:sequence>
+					<xsd:element name="address" type="xsd:int" />
+					<xsd:element minOccurs="0" name="country" type="xsd:string" />
+					<xsd:element minOccurs="0" name="county" type="xsd:string" />
+					<xsd:element minOccurs="0" name="street_address" type="xsd:string" />
+					<xsd:element minOccurs="0" name="town_village" type="xsd:string" />
+					<xsd:element minOccurs="0" name="zipcode" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="PakkumusParing">
+		<wsdl:part element="tns:PakkumusParing" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="PakkumusVastus">
+		<wsdl:part element="tns:PakkumusVastus" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="pakkumus">
+		<wsdl:operation name="teePakkumus">
+			<wsdl:input message="tns:PakkumusParing" />
+			<wsdl:output message="tns:PakkumusVastus" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="pakkumusSOAP" type="tns:pakkumus">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="teePakkumus">
+			<soap:operation soapAction="http://idu0080.ttu.ee/pakkumus/teePakkumus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="pakkumus">
+		<wsdl:port binding="tns:pakkumusSOAP" name="pakkumusSOAP">
+			<soap:address location="http://idu0080.ttu.ee/pakkumus" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
